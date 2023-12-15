@@ -48,20 +48,24 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    Widget mainContent = const Center(
+      child: Text('No expenses found, start adding some!'),
+    );
+
+    if (_registeredExpenses.isNotEmpty) {
+      mainContent = ExpensesList(
+        expenses: _registeredExpenses,
+        onLeftSwap: _removeExpense,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Expenses Tracker'), actions: [
         IconButton(
             onPressed: _openAddExpenseOverlay, icon: const Icon(Icons.add))
       ]),
       body: Column(
-        children: [
-          const Text('The chart'),
-          Expanded(
-              child: ExpensesList(
-            expenses: _registeredExpenses,
-            onLeftSwap: _removeExpense,
-          )),
-        ],
+        children: [const Text('The chart'), Expanded(child: mainContent)],
       ),
     );
   }
